@@ -1,6 +1,6 @@
-import './App.css';
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import './App.css';
 
 
 
@@ -10,7 +10,8 @@ function App() {//main component
   const [users, setUsers] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
+  const [edit, setEditUser] = useState(null);
 
   function getUser() {
     axios.get('http://localhost:8080/users')
@@ -18,7 +19,7 @@ function App() {//main component
         setUsers(response.data);
       })
       .catch(function (error) {
-        console.log(error); 
+        console.log(error);
       })
   }
 
@@ -35,7 +36,7 @@ function App() {//main component
   }
 
   function createUser(event) {
-   event.preventDefault();
+    event.preventDefault();
 
     const data = {
       username: username,
@@ -44,15 +45,35 @@ function App() {//main component
     }
 
     axios.post("http://localhost:8080/user", data)
-      .then(function (result) {
+      .then(function (response) {
         getUser();
-        console.log(result);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
       })
 
   }
+  const updateUser = (event) => {
+    event.preventDefault();
+
+    const data = {
+      username: username,
+      password: password,
+      email: email
+    }
+
+    axios.put("http://localhost:8080/user/" + edit, data)
+      .then(function (response) {
+        getUser();
+        setEditUser(null);
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   // const [count, setCount] = useState(0)
 
   // function increaseCounter() {
@@ -76,33 +97,84 @@ function App() {//main component
           return (
             <div key={row.id}>
               {row.username} - {row.email}
+              <button type='button' onClick={() => {
+                setEditUser(row.id);
+                setUsername(row.username);
+                setEmail(row.email);
+              }}>Edit</button>
+
+              <button type="button" onClick={() => {
+                axios.delete("http://localhost:8080/user/" + row.id)
+                  .then(function () {
+                    getUser();
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+              }}>Delete</button>
             </div>
           );
         })
       }
-
-      <h2>Create User</h2>
-      <form onSubmit={createUser}>
+      {!edit &&
         <div>
-          <label>User Name : </label>
-          <input type='text' required onChange={handleUserName} />
+          <h2>Create User</h2>
+          <form onSubmit={createUser} id='form'>
+            <div>
+              <label>User Name : </label>
+              <input type='text' required onChange={handleUserName} />
+            </div>
+            <br />
+            <div>
+              <label>Password : </label>
+              <input type='text' required onChange={handlePassword} />
+            </div>
+            <br />
+            <div>
+              <label>User Email : </label>
+              <input type='text' required onChange={handleEmail} />
+            </div>
+
+            <br />
+
+            <button type='submit'>Create User</button>
+
+          </form>
         </div>
-        <br />
+      }
+
+
+      {edit &&
+
         <div>
-          <label>Password : </label>
-          <input type='text' required onChange={handlePassword} />
+          <h2>Edit User</h2>
+          <form onSubmit={updateUser}>
+            <div>
+              <label>User Name : </label>
+              <input type='text' required onChange={handleUserName} value={username} />
+            </div>
+            <br />
+            <div>
+              <label>Password : </label>
+              <input type='text' required onChange={handlePassword} />
+            </div>
+            <br />
+            <div>
+              <label>User Email : </label>
+              <input type='text' required onChange={handleEmail} value={email} />
+            </div>
+
+            <br />
+            <button type='submit'>Update User</button>
+            <button type='button' onClick={() => {
+              setEditUser(null);
+            }}>Cancel</button>
+
+          </form>
+
         </div>
-        <br />
-        <div>
-          <label>User Email : </label>
-          <input type='text' required onChange={handleEmail} />
-        </div>
 
-        <br />
-
-        <button type='submit'>Create username</button>
-
-      </form>
+      }
 
     </div>
   );

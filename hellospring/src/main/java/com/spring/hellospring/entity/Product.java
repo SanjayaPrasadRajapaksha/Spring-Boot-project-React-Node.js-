@@ -11,20 +11,16 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-//@Table (name = "users")
-public class User {
+public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String name;
 
-    private String password;
+    private Double price;
 
-    @Column(unique = true)
-    private String email;
-
-    
+    private Integer quantity;
 }

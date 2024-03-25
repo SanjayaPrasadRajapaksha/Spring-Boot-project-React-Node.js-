@@ -11,27 +11,46 @@ import com.spring.hellospring.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Override
-    public List<User> getAllUsers() {
-        
-       return userRepository.findAll();
+  @Override
+  public List<User> getAllUsers() {
+
+    return userRepository.findAll();
+  }
+
+  @Override
+  public User getUserById(long id) {
+
+    return userRepository.findById(id).orElse(null);// use '.orElse(null)' because sometimes we can send id but it is
+                                                    // not in the user table
+  }
+
+  @Override
+  public User createUser(User user) {
+
+    return userRepository.save(user);
+  }
+
+  @Override
+  public User updateUser(long id, User user) {
+
+    User existUser = userRepository.findById(id).orElse(null);
+
+    if (existUser != null) {
+      existUser.setUsername(user.getUsername());
+      existUser.setPassword(user.getPassword());
+      existUser.setEmail(user.getEmail());
+      return userRepository.save(existUser);
+    } else {
+      return null;
     }
 
-    @Override
-    public User getUserById(long id) {
+  }
 
-        return userRepository.findById(id).orElse(null);//use '.orElse(null)' because sometimes we can send id  but it is not in the user table
-    }
-
-    @Override
-    public User createUser(User user) {
-
-      return userRepository.save(user);
-    }
-
-} 
-    
-
+  @Override
+  public void deleteUser(long id) {
+    userRepository.deleteById(id);
+  }
+}
