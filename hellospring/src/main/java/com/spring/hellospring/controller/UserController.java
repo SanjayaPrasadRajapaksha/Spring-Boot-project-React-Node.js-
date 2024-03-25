@@ -3,6 +3,7 @@ package com.spring.hellospring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +28,20 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable long id) {
+       User user = userService.getUserById(id);
+
+       if(user == null){
+        return ResponseEntity.status(404).build();
+       }else{
+        return ResponseEntity.status(200).body(user);
+       }
     }
 
     @PostMapping("/user")
-    public User creatUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<User> creatUser(@RequestBody User user) {
+        User createUser = userService.createUser(user);
+        return ResponseEntity.status(201).body(createUser);
     }
 
     @PutMapping("/user/{id}")
