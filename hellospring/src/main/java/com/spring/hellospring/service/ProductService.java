@@ -10,6 +10,8 @@ import com.spring.hellospring.entity.Product;
 public interface ProductService {
 
     List<Product> getAllProducts();
+
     Product getProductById(long id);
+
     Product createProduct(Product product);
-} 
+}

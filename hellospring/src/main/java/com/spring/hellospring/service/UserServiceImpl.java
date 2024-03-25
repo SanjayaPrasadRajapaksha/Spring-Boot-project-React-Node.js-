@@ -23,8 +23,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public User getUserById(long id) {
 
-    return userRepository.findById(id).orElse(null);// use '.orElse(null)' because sometimes we can send id but it is
-                                                    // not in the user table
+    return userRepository.findById(id).orElse(null);
   }
 
   @Override

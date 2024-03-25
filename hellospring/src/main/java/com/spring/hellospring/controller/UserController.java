@@ -16,26 +16,23 @@ import com.spring.hellospring.entity.User;
 import com.spring.hellospring.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "*") // use @CrossOrigin to decide which crossOrigin is allowed
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users") // static routing path
+    @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/user/{id}") // dynamic routing path using ID => use 'id' within '{}' because 'id' path is
-                              // dynamic(change like 1 2 ect...) and 'user'path is static because it is not
-                              // changed
-    public User getUserById(@PathVariable long id) { // use '@PathVariable' because get 'id' from using a dynamic
-                                                     // variable of path
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable long id) {
         return userService.getUserById(id);
     }
 
     @PostMapping("/user")
-    public User creatUser(@RequestBody User user) {// use '@RequestBody' because get user's data from API request
+    public User creatUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 

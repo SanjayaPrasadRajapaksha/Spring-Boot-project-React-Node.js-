@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.hellospring.entity.User;
 
-//same as DAO layer in layered architecture
-
 @Repository
-public interface UserRepository extends JpaRepository <User,Long> {
-    
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }

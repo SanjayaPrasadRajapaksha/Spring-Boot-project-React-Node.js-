@@ -5,7 +5,7 @@ import './App.css';
 
 
 
-function App() {//main component
+function App() {
 
   const [users, setUsers] = useState("");
   const [username, setUsername] = useState("");
@@ -74,22 +74,10 @@ function App() {//main component
       });
   }
 
-  // const [count, setCount] = useState(0)
-
-  // function increaseCounter() {
-  //   setCount(count-1);
-  //   console.log(count);
-  // }
 
   return (
     <div className="App">
-      {/* <ListItem itemName = "java"/>
-     <ListItem itemName = "spring boot"/>
-     <ListItem itemName = "javascript"/>
-
-     <h1>Counter : {count}</h1>
-     <button type='button' onClick={increaseCounter}>Increase</button> */}
-
+    
       <button type='button' onClick={getUser}>Get User</button>
 
       {
@@ -179,22 +167,5 @@ function App() {//main component
     </div>
   );
 }
-
-// function  ListItem({itemName,itemID}){//sub component
-//   return (
-//     <div>
-//       {itemName}
-//       <Child/>
-//     </div>
-//   );
-// }
-
-// function Child(){
-//   return (
-//     <div>
-//       Child
-//     </div>
-//   )
-// }
 
 export default App;
