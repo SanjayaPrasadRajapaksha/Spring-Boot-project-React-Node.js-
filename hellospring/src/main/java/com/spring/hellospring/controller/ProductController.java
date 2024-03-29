@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.hellospring.dto.ProductDto;
-import com.spring.hellospring.entity.Category;
 import com.spring.hellospring.entity.Product;
 import com.spring.hellospring.service.CategoryService;
 import com.spring.hellospring.service.ProductService;
