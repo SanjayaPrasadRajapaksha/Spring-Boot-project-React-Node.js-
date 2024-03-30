@@ -28,37 +28,70 @@ function Products() {
     const [quantity, setQuantity] = useState("");
     const [category_id, setCategory_id] = useState(null);
 
+
     function handleName(event) {
         setName(event.target.value);
     }
 
     function handlePrice(event) {
-        setPrice(event.target.value);
+        setPrice(parseFloat(event.target.value));
     }
 
     function handleQuantity(event) {
-        setQuantity(event.target.value);
+        setQuantity(parseInt(event.target.value));
     }
 
     function handleCategory(event) {
         setCategory_id(event.target.value);
     }
-
+function getProduct(){
+    axios.get("http://localhost:8080/products")
+            .then(function (response) {
+                setProducts(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+}
     function createProduct(event) {
         event.preventDefault();
 
         const data = {
-            name :name,
-            price :price,
-            quantity :quantity,
-            category_id:category_id
+            name: name,
+            price: price,
+            quantity: quantity,
+            category_id: category_id
         }
 
-        axios.post("http://localhost:8080/product" , data)
+        axios.post("http://localhost:8080/product", data)
+            .then(function (response) {
+                getProduct();
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+
+    const [edit, setEdit] = useState(false);
+    const [product_id,setProduct_id] = useState(null);
+
+    function updateProduct(event){
+        event.preventDefault();
+
+        const data ={
+            name:name,
+            price:price,
+            quantity:quantity,
+            category_id:category_id,
+        }
+
+        axios.put("http://localhost:8080/product/"+product_id, data)
         .then(function (response) {
             console.log(response.data);
         })
-        .catch(function(error){
+        .catch(function (error){
             console.log(error);
         })
     }
@@ -75,7 +108,14 @@ function Products() {
                         <p>category : {product.category.name}</p>
                         <p>price : {product.price}</p>
                         <p>quantity : {product.quantity}</p>
-
+                        <button type="button" onClick={() => {
+                            setEdit(true);
+                            setProduct_id(product.id);
+                            setName(product.name);
+                            setPrice(product.price);
+                            setQuantity(product.quantity);
+                            setCategory_id(product.category.id);
+                        }}>Edit</button>
                     </div>
                 )
 
@@ -84,46 +124,92 @@ function Products() {
             }
 
 
-            <h1>Create Product</h1>
-            <form onSubmit={createProduct}>
 
+            {!edit &&
                 <div>
-                    <label>Product Name</label>
-                    <input type="text" required onChange={handleName} />
-                </div>
+                    <h2>Create Product</h2>
+                    <form onSubmit={createProduct}>
 
+                        <div>
+                            <label>Product Name</label>
+                            <input type="text" required onChange={handleName} />
+                        </div>
+
+                        <div>
+                            <label>Product Price</label>
+                            <input type="text" required onChange={handlePrice} />
+                        </div>
+
+                        <div>
+                            <label>Product Quantity</label>
+                            <input type="text" required onChange={handleQuantity} />
+                        </div>
+
+                        <div>
+                            <label>Product Category</label>
+                            <select onChange={handleCategory} required>
+                                <option value="">select</option>
+
+                                {categories && categories.map((category) => {
+                                    return (
+                                        <option key={category.id} value={category.id}>{category.name}</option>
+                                    )
+
+                                })
+
+                                }
+                            </select>
+                        </div>
+                        <br />
+
+                        <button type="submit" >Create Product</button>
+
+                    </form>
+                </div>
+            }
+
+            {edit &&
                 <div>
-                    <label>Product Price</label>
-                    <input type="text" required onChange={handlePrice} />
+                    <h2>Update Product</h2>
+                    <form onSubmit={updateProduct}>
+
+                        <div>
+                            <label>Product Name</label>
+                            <input type="text" required onChange={handleName} value={name} />
+                        </div>
+
+                        <div>
+                            <label>Product Price</label>
+                            <input type="text" required onChange={handlePrice} value={price} />
+                        </div>
+
+                        <div>
+                            <label>Product Quantity</label>
+                            <input type="text" required onChange={handleQuantity} value={quantity} />
+                        </div>
+
+                        <div>
+                            <label>Product Category</label>
+                            <select onChange={handleCategory} required>
+                                <option value="">select</option>
+
+                                {categories && categories.map((category) => {
+                                    return (
+                                        <option key={category.id} value={category.id}  selected={category_id === category.id}>{category.name}</option>
+                                    )
+
+                                })
+
+                                }
+                            </select>
+                        </div>
+                        <br />
+
+                        <button type="submit" >Update Product</button>
+
+                    </form>
                 </div>
-
-                <div>
-                    <label>Product Quantity</label>
-                    <input type="text" required onChange={handleQuantity} />
-                </div>
-
-                <div>
-                    <label>Product Category</label>
-                    <select onChange={handleCategory} required>
-                        <option value="">select</option>
-
-                        {categories && categories.map((category) => {
-                            return(
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                            )
-                           
-                        })
-
-                        }
-                    </select>
-                </div>
-                <br />
-                <br />
-                <br />
-                <button type="submit" >Create Product</button>
-
-            </form>
-
+            }
         </div>
     )
 }
