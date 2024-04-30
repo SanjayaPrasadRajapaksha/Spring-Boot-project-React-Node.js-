@@ -32,7 +32,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable long id) {
         Product product = productService.getProductById(id);
 
@@ -43,7 +43,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/product")
+    @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto) {
         
 
@@ -59,7 +59,7 @@ public class ProductController {
 
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable long id,@RequestBody ProductDto productDto){
 
         Product product = new Product();
@@ -79,7 +79,7 @@ public class ProductController {
 
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/products/{id}")
     public void deleteProduct(@PathVariable long id){
         productService.deleteProduct(id);
     }

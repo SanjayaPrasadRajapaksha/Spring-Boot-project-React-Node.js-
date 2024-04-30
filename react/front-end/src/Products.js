@@ -1,12 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "./utils/AuthContext";
 
 function Products() {
 
     const [products, setProducts] = useState(null);
     const [categories, setCategories] = useState(null);
+
+    const { isAuthenticated, jwtToken } = useAuth();
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    }
+
     useEffect(() => {
-        axios.get("http://localhost:8080/products")
+        axios.get("http://localhost:8080/products", config)
             .then(function (response) {
                 setProducts(response.data);
             })
@@ -14,14 +24,15 @@ function Products() {
                 console.log(error);
             });
 
-        axios.get("http://localhost:8080/categories")
+        axios.get("http://localhost:8080/categories", config)
             .then(function (response) {
                 setCategories(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
-    }, [])
+
+    }, [isAuthenticated])
 
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
@@ -44,15 +55,15 @@ function Products() {
     function handleCategory(event) {
         setCategory_id(event.target.value);
     }
-function getProduct(){
-    axios.get("http://localhost:8080/products")
+    function getProduct() {
+        axios.get("http://localhost:8080/products", config)
             .then(function (response) {
                 setProducts(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
-}
+    }
     function createProduct(event) {
         event.preventDefault();
 
@@ -63,7 +74,7 @@ function getProduct(){
             category_id: category_id
         }
 
-        axios.post("http://localhost:8080/product", data)
+        axios.post("http://localhost:8080/products", data, config)
             .then(function (response) {
                 getProduct();
                 console.log(response.data);
@@ -74,26 +85,27 @@ function getProduct(){
     }
 
 
-    const [edit, setEdit] = useState(false);
-    const [product_id,setProduct_id] = useState(null);
+    const [edit, setEdit] = useState(null);
+    const [product_id, setProduct_id] = useState(null);
 
-    function updateProduct(event){
+    function updateProduct(event) {
         event.preventDefault();
 
-        const data ={
-            name:name,
-            price:price,
-            quantity:quantity,
-            category_id:category_id,
+        const data = {
+            name: name,
+            price: price,
+            quantity: quantity,
+            category_id: category_id,
         }
 
-        axios.put("http://localhost:8080/product/"+product_id, data)
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error){
-            console.log(error);
-        })
+        axios.put("http://localhost:8080/products/" + product_id, data, config)
+            .then(function (response) {
+                getProduct();
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 
     return (
@@ -195,7 +207,7 @@ function getProduct(){
 
                                 {categories && categories.map((category) => {
                                     return (
-                                        <option key={category.id} value={category.id}  selected={category_id === category.id}>{category.name}</option>
+                                        <option key={category.id} value={category.id} selected={category_id === category.id}>{category.name}</option>
                                     )
 
                                 })
@@ -206,6 +218,10 @@ function getProduct(){
                         <br />
 
                         <button type="submit" >Update Product</button>
+                        &nbsp;
+                        <button type="buttton" onClick={()=>{
+                            setEdit(null);
+                        }} >Cancel</button>
 
                     </form>
                 </div>

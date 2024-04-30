@@ -20,14 +20,14 @@ function Orders() {
         <div className="container">
             <h1>Orders</h1>
             <div className='text-end'>
-                <button className="btn btn-primary" onClick={()=>{
+                <button className="btn btn-primary" onClick={() => {
                     axios.post('http://localhost:8080/order')
-                    .then(function (response) {
-                       navigate(`/orders/${response.data.id}/editOrder`)
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                        .then(function (response) {
+                            navigate(`/orders/${response.data.id}/editOrder`)
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                 }}>Create Order</button>
             </div>
 
@@ -51,8 +51,8 @@ function Orders() {
                                     <td>{order.orderedProducts.length}</td>
                                     <td>{order.totalPrice}</td>
                                     <td>
-                                        <button className="btn btn-primary" onClick={()=>{
-                                             navigate(`/orders/${order.id}/editOrder`)
+                                        <button className="btn btn-primary" onClick={() => {
+                                            navigate(`/orders/${order.id}/editOrder`)
                                         }}>Edit</button>
                                     </td>
                                 </tr>

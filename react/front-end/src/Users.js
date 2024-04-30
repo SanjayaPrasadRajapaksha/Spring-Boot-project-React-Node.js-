@@ -18,15 +18,15 @@ function Users() {
                 console.log(error);
             })
     }
-useEffect(()=>{
-    axios.get('http://localhost:8080/users')
-    .then(function (response) {
-        setUsers(response.data);
-    })
-    .catch(function (error) {
-        console.log(error);
-    })
-},[])
+    useEffect(() => {
+        axios.get('http://localhost:8080/users')
+            .then(function (response) {
+                setUsers(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }, [])
     function handleUserName(event) {
         setUsername(event.target.value);
     }
@@ -48,7 +48,7 @@ useEffect(()=>{
             email: email
         }
 
-        axios.post("http://localhost:8080/user", data)
+        axios.post("http://localhost:8080/users", data)
             .then(function (response) {
                 getUser();
                 console.log(response.data);
@@ -67,7 +67,7 @@ useEffect(()=>{
             email: email
         }
 
-        axios.put("http://localhost:8080/user/" + edit, data)
+        axios.put("http://localhost:8080/users/" + edit, data)
             .then(function (response) {
                 getUser();
                 setEditUser(null);
@@ -96,7 +96,7 @@ useEffect(()=>{
                             }}>Edit</button>
 
                             <button type="button" onClick={() => {
-                                axios.delete("http://localhost:8080/user/" + row.id)
+                                axios.delete("http://localhost:8080/users/" + row.id)
                                     .then(function () {
                                         getUser();
                                     })

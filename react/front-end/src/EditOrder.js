@@ -63,13 +63,13 @@ function EditOrder() {
                                                     <td>{products.id}</td>
                                                     <td>{products.name}</td>
                                                     <td>{products.price}</td>
-                                                    <td><button type='button' className='btn btn-danger btn-sm' onClick={()=>{
-                                                        
+                                                    <td><button type='button' className='btn btn-danger btn-sm' onClick={() => {
+
                                                         axios.delete(`http://localhost:8080/order/${id}/product/${products.id}`)
-                                                           .then(function (response) {
+                                                            .then(function (response) {
                                                                 setOrders(response.data)
                                                             })
-                                                           .catch(function (error) {
+                                                            .catch(function (error) {
                                                                 console.log(error);
                                                             });
                                                     }}>Remove</button></td>
