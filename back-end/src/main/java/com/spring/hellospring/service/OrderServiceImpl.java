@@ -47,12 +47,42 @@ public class OrderServiceImpl implements OrderService {
             return null;
         }
 
-        order.getOrderedProduct().add(product);
+        order.getOrderedProducts().add(product);
 
         order.setTotalPrice(order.getTotalPrice() + product.getPrice() * quantity);
 
         return orderReposirory.save(order);
 
+    }
+
+    @Override
+    public Order removeProductFromOrder(long order_id, long product_id) {
+      Order order = orderReposirory.findById(order_id).orElse(null);
+
+      if (order == null) {
+          return null;
+      }
+
+      Product product = productRepository.findById(product_id).orElse(null);
+
+      if (product == null) {
+          return null;
+      }
+
+      order.getOrderedProducts().remove(product);
+
+      order.setTotalPrice(order.getTotalPrice() - product.getPrice());
+
+      return orderReposirory.save(order);
+
+
+    }
+
+    @Override
+    public void deleteOrder(long order_id) {
+
+        orderReposirory.deleteById(order_id);
+      
     }
 
 }

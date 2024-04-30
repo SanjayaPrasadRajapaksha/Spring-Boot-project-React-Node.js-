@@ -1,12 +1,12 @@
 package com.spring.hellospring.controller;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +49,7 @@ public class OrderController {
 
         Order.setTotalPrice(0.0);
         Order.setOrderDate(LocalDateTime.now());
-        Order.setOrderedProduct(null);
+        Order.setOrderedProducts(null);
 
         Order createOrder = orderService.createOrder(Order);
         return ResponseEntity.status(201).body(createOrder);
@@ -61,6 +61,16 @@ public class OrderController {
     public Order addPOrderProduct(@PathVariable long id, @RequestBody OrderedProductDto orderedProductDto) {
 
         return orderService.addProductTOrder(id, orderedProductDto.getProduct_id(), orderedProductDto.getQuantity());
+    }
+
+    @DeleteMapping("/order/{order_id}/product/{product_id}")
+    public void removeProductFromOrder(@PathVariable long order_id, @PathVariable long product_id) {
+        orderService.removeProductFromOrder(order_id, product_id);
+    }
+
+    @DeleteMapping("/order/{id}")
+    public void deleteOrder(@PathVariable long id) {
+        orderService.deleteOrder(id);
     }
 
 }

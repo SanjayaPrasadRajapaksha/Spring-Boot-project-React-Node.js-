@@ -31,20 +31,18 @@ public class CategoryController {
         Category category = categoryService.getCategoryById(id);
 
         if (category == null) {
-                return ResponseEntity.status(404).build();
-        }else{
+            return ResponseEntity.status(404).build();
+        } else {
             return ResponseEntity.status(200).body(category);
         }
     }
 
     @PostMapping("/category")
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 
-        Category createCategory =  categoryService.createCategory(category);
+        Category createCategory = categoryService.createCategory(category);
 
         return ResponseEntity.status(201).body(createCategory);
     }
-
-    
 
 }

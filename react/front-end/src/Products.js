@@ -108,7 +108,7 @@ function getProduct(){
                         <p>category : {product.category.name}</p>
                         <p>price : {product.price}</p>
                         <p>quantity : {product.quantity}</p>
-                        <button type="button" onClick={() => {
+                        <button type="button" className="btn btn-primary" onClick={() => {
                             setEdit(true);
                             setProduct_id(product.id);
                             setName(product.name);

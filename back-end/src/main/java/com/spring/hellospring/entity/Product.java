@@ -37,7 +37,7 @@ public class Product {
     private Category category;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "orderedProduct")
+    @ManyToMany(mappedBy = "orderedProducts")
     private List<Order> order;
 
 
