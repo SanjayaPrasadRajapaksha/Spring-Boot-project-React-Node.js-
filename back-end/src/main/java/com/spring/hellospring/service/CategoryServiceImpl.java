@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategory() {
-    return categoryRepository.findAll();
+        return categoryRepository.findAll();
     }
 
     @Override
@@ -31,14 +31,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category UpdateCategory(long id, Category category) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'UpdateCategory'");
+        Category findCategory = categoryRepository.findById(id).orElse(null);
+
+        if (findCategory == null) {
+            return null;
+        }
+        {
+            findCategory.setName(category.getName());
+            return categoryRepository.save(category);
+
+        }
+
     }
 
-    @Override
-    public void deleteCategory(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCategory'");
-    }
-    
 }

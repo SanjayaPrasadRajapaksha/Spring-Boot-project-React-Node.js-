@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.hellospring.entity.Category;
 import com.spring.hellospring.service.CategoryService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -44,5 +46,12 @@ public class CategoryController {
 
         return ResponseEntity.status(201).body(createCategory);
     }
+
+    @PutMapping("/category/{id}")
+    public Category putMethodName(@PathVariable long id, @RequestBody Category category) {
+
+        return categoryService.UpdateCategory(id, category);
+    }
+
 
 }
